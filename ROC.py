@@ -1,5 +1,5 @@
 """
-Python code to compute ROC and CI
+Python code to compute ROC and AUROC
 """
 
 import numpy as np
