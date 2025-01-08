@@ -1,3 +1,60 @@
+"""
+# Metrics Calculation for Classification Models
+
+This script provides functions to calculate several key metrics for evaluating classification models, including:
+- **Sensitivity** (True Positive Rate)
+- **Specificity** (True Negative Rate)
+- **Precision** (Positive Predictive Value)
+- **Accuracy**
+- **AUROC** (Area Under Receiver Operating Characteristic Curve)
+
+Additionally, the script computes statistical measures for these metrics:
+- Confidence intervals using the normal approximation
+- Variance of proportions based on sample size
+
+The code supports bootstrap sampling for AUROC to calculate its variance and confidence intervals.
+
+## Functionality:
+1. **calculate_confidence_interval(proportion, n, confidence)**: Calculates the confidence interval for a given proportion.
+2. **calculate_variance(proportion, n)**: Calculates the variance of a given proportion.
+3. **calculate_metrics(y_true, y_pred_proba, threshold, n_bootstrap)**: Calculates various evaluation metrics and their confidence intervals, including AUROC with bootstrap sampling.
+4. **process_folder(input_folder, output_file)**: Processes all CSV files in a folder, extracts true labels and predicted probabilities, and calculates the metrics for each file. The results are saved as an Excel file.
+
+## Dependencies:
+- `pandas` for handling data.
+- `numpy` for numerical operations.
+- `scikit-learn` for machine learning metrics.
+- `scipy` for statistical operations.
+
+## Usage:
+Replace the `input_folder` variable with the path to the folder containing the CSV files, where each CSV should have columns `y_test` and `y_pred_proba`. The script will process each file, calculate the metrics, and save the results in an Excel file specified by `output_file`.
+
+## Data Format:
+
+The script expects the data in CSV files, where each file contains two columns:
+1. **y_test**: A column representing the true labels (binary values 0 or 1) for the classification task.
+2. **y_pred_proba**: A column representing the predicted probabilities (floating-point numbers between 0 and 1) for the positive class.
+
+#### Example of a CSV file format:
+
+| y_test | y_pred_proba |
+|--------|--------------|
+| 0      | 0.12         |
+| 1      | 0.85         |
+| 0      | 0.34         |
+| 1      | 0.72         |
+| 0      | 0.22         |
+
+- **y_test**: Contains the actual class labels (0 or 1).
+- **y_pred_proba**: Contains the predicted probabilities that the instance belongs to the positive class (1).
+
+## Important Notes:
+- The **y_test** column should contain binary values (0 or 1).
+- The **y_pred_proba** column should contain floating-point numbers between 0 and 1 representing the predicted probability of the positive class.
+- The script will process all CSV files in the specified input folder and extract the metrics for each file.
+- The results will be saved in an Excel file where each row corresponds to a CSV file and contains the calculated metrics (sensitivity, specificity, precision, accuracy, and AUROC with their confidence intervals and variances).
+"""
+
 import os
 import pandas as pd
 import numpy as np
@@ -119,7 +176,7 @@ def process_folder(input_folder, output_file):
     results_df.to_excel(output_file, index=False)
 
 # Example usage
-input_folder = "/Users/saham2/Downloads/BBD_revision_08January2025/AnalysisUsing_esr_contrlq_8Jan2025/RevisonStudyUsing_esr_contrlq_8jan2025/All_predictionFiles8Jan2025"  # Replace with your folder path
+input_folder = "/Users/Path/to/the/CSV/Files"  # Replace with your folder path. 
 output_file = "metrics_results.xlsx"  # Desired output file name
 process_folder(input_folder, output_file)
 
